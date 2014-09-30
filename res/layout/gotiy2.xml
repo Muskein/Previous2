@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:flatui="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#e8e8e8"
+    android:paddingLeft="5dp">
+    
+    <com.cengalabs.flatui.views.FlatTextView
+                android:id="@+id/rules2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:maxLines="1"
+                android:gravity="center_vertical"
+                android:text="Rules"
+                android:textSize="20dip"
+                flatui:textColor="main"
+                flatui:theme="@array/grass" />
+     
+               
+     
+
+ <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+<com.cengalabs.flatui.views.FlatTextView
+    android:id="@+id/textView2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_below="@+id/rules2"
+     flatui:theme="@array/sky"
+    android:layout_marginTop="16dp"
+    android:gravity="center_vertical"
+    android:text="@string/initialfragment"
+    android:textSize="18dip" />
+</ScrollView>
+
+ <com.cengalabs.flatui.views.FlatButton
+                        android:id="@+id/button_white2"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:text="White"
+                        android:layout_weight="1"
+                        android:layout_margin="3dp" />
+
+ <com.cengalabs.flatui.views.FlatButton
+     android:id="@+id/flatButton2"
+     android:layout_width="128dp"
+     android:layout_height="wrap_content"
+     android:layout_marginLeft="85dp"
+     android:layout_marginBottom="33dp"
+     android:text="I agree" />
+
+    </LinearLayout>

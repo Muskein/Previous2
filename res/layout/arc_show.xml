@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sat="http://schemas.android.com/apk/res/com.example.previous2"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <com.example.previous2.ArcMenu
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        sat:closeOnClick="true"
+        sat:expandDuration="800"
+        sat:mainImage="@drawable/ic_launcher"
+        sat:satelliteDistance="130dp"
+        sat:totalSpacingDegree="120"
+         />
+
+</FrameLayout>

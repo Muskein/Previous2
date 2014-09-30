@@ -55,9 +55,12 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.ZoomControls;
 
+class MyDebug {
+	static final boolean LOG = false;
+}
 
-public class MainActivityOpenCamera2 extends Activity {
-	private static final String TAG = "MainActivityOpenCamera2";
+public class Recognise2Fragment extends Activity {
+	private static final String TAG = "MainActivity";
 	private SensorManager mSensorManager = null;
 	private Sensor mSensorAccelerometer = null;
 	private Sensor mSensorMagnetic = null;
@@ -80,7 +83,7 @@ public class MainActivityOpenCamera2 extends Activity {
 		}
     	long time_s = System.currentTimeMillis();
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.newlayout);
+		setContentView(R.layout.activity_main);
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		if( getIntent() != null && getIntent().getExtras() != null ) {
@@ -144,7 +147,7 @@ public class MainActivityOpenCamera2 extends Activity {
         orientationEventListener = new OrientationEventListener(this) {
 			@Override
 			public void onOrientationChanged(int orientation) {
-				MainActivityOpenCamera2.this.onOrientationChanged(orientation);
+				Recognise2Fragment.this.onOrientationChanged(orientation);
 			}
         };
 
@@ -354,49 +357,16 @@ public class MainActivityOpenCamera2 extends Activity {
 			view.setLayoutParams(layoutParams);
 			view.setRotation(ui_rotation);
 
-			view = findViewById(R.id.exposure);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.gallery);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(ui_rotation);
-
-			view = findViewById(R.id.focus_mode);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.exposure);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(ui_rotation);
-
-			view = findViewById(R.id.flash);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.focus_mode);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(ui_rotation);
-
-			view = findViewById(R.id.switch_video);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.flash);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(ui_rotation);
-
+		
+		
+		
+		
 			view = findViewById(R.id.switch_camera);
 			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
 			layoutParams.addRule(align_parent_left, 0);
 			layoutParams.addRule(align_parent_right, 0);
 			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
 			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.switch_video);
 			layoutParams.addRule(right_of, 0);
 			view.setLayoutParams(layoutParams);
 			view.setRotation(ui_rotation);
@@ -426,23 +396,7 @@ public class MainActivityOpenCamera2 extends Activity {
 			view.setLayoutParams(layoutParams);
 			view.setRotation(ui_rotation);
 
-			view = findViewById(R.id.zoom);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_left, 0);
-			layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_top, 0);
-			layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(180.0f); // should always match the zoom_seekbar, so that zoom in and out are in the same directions
-
-			view = findViewById(R.id.zoom_seekbar);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_left, 0);
-			layoutParams.addRule(align_right, R.id.zoom);
-			layoutParams.addRule(above, R.id.zoom);
-			layoutParams.addRule(below, 0);
-			view.setLayoutParams(layoutParams);
-		}
+				}
 		else {
 			View view = findViewById(R.id.switch_camera);
 			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
@@ -455,48 +409,12 @@ public class MainActivityOpenCamera2 extends Activity {
 			view.setLayoutParams(layoutParams);
 			view.setRotation(ui_rotation);
 
-			view = findViewById(R.id.switch_video);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, 0);
-			layoutParams.addRule(right_of, R.id.switch_camera);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(ui_rotation);
-
-			view = findViewById(R.id.flash);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, 0);
-			layoutParams.addRule(right_of, R.id.switch_video);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(ui_rotation);
-
-			view = findViewById(R.id.focus_mode);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, 0);
-			layoutParams.addRule(right_of, R.id.flash);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(ui_rotation);
-
-			view = findViewById(R.id.exposure);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, 0);
-			layoutParams.addRule(right_of, R.id.focus_mode);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(ui_rotation);
-
+		
 			view = findViewById(R.id.gallery);
 			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
 			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
 			layoutParams.addRule(align_parent_bottom, 0);
 			layoutParams.addRule(left_of, 0);
-			layoutParams.addRule(right_of, R.id.exposure);
 			view.setLayoutParams(layoutParams);
 			view.setRotation(ui_rotation);
 
@@ -536,22 +454,7 @@ public class MainActivityOpenCamera2 extends Activity {
 			view.setLayoutParams(layoutParams);
 			view.setRotation(ui_rotation);
 
-			view = findViewById(R.id.zoom);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_left, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_right, 0);
-			layoutParams.addRule(align_parent_top, 0);
-			layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
-			view.setLayoutParams(layoutParams);
-			view.setRotation(180.0f); // should always match the zoom_seekbar, so that zoom in and out are in the same directions
-
-			view = findViewById(R.id.zoom_seekbar);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_left, R.id.zoom);
-			layoutParams.addRule(align_right, 0);
-			layoutParams.addRule(above, R.id.zoom);
-			layoutParams.addRule(below, 0);
-			view.setLayoutParams(layoutParams);
+		
 		}
 		
 		{
@@ -575,26 +478,6 @@ public class MainActivityOpenCamera2 extends Activity {
 			lp.height = height_pixels;
 			view.setLayoutParams(lp);
 
-			view = findViewById(R.id.seekbar_zoom);
-			view.setRotation(ui_rotation);
-			view.setAlpha(0.5f);
-			// n.b., using left_of etc doesn't work properly when using rotation (as the amount of space reserved is based on the UI elements before being rotated)
-			if( ui_rotation == 0 ) {
-				view.setTranslationX(0);
-				view.setTranslationY(height_pixels);
-			}
-			else if( ui_rotation == 90 ) {
-				view.setTranslationX(-height_pixels);
-				view.setTranslationY(0);
-			}
-			else if( ui_rotation == 180 ) {
-				view.setTranslationX(0);
-				view.setTranslationY(-height_pixels);
-			}
-			else if( ui_rotation == 270 ) {
-				view.setTranslationX(height_pixels);
-				view.setTranslationY(0);
-			}
 		}
 		
 		{
@@ -664,9 +547,7 @@ public class MainActivityOpenCamera2 extends Activity {
     void clearSeekBar() {
 		View view = findViewById(R.id.seekbar);
 		view.setVisibility(View.GONE);
-		view = findViewById(R.id.seekbar_zoom);
-		view.setVisibility(View.GONE);
-    }
+		 }
     
     void setSeekBarExposure() {
 		SeekBar seek_bar = ((SeekBar)findViewById(R.id.seekbar));
@@ -702,18 +583,6 @@ public class MainActivityOpenCamera2 extends Activity {
 				}
 			});
 
-			ZoomControls seek_bar_zoom = (ZoomControls)findViewById(R.id.seekbar_zoom);
-			seek_bar_zoom.setVisibility(View.VISIBLE);
-			seek_bar_zoom.setOnZoomInClickListener(new OnClickListener(){
-	            public void onClick(View v){
-	            	preview.changeExposure(1, true);
-	            }
-	        });
-			seek_bar_zoom.setOnZoomOutClickListener(new OnClickListener(){
-		    	public void onClick(View v){
-	            	preview.changeExposure(-1, true);
-		        }
-		    });
 		}
 		else if( visibility == View.VISIBLE ) {
 			clearSeekBar();

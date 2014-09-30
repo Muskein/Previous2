@@ -711,7 +711,16 @@ public static int numberOfPictures =0;
 			return;
 		}
 		try {
+			if(Camera.getNumberOfCameras() == 1)
+			{
 			camera = Camera.open(cameraId);
+			
+		}
+			else
+			{
+				camera = Camera.open(cameraId + 1);
+			
+			}
 		}
 		catch(RuntimeException e) {
 			if( MyDebug.LOG )
@@ -771,9 +780,7 @@ public static int numberOfPictures =0;
 			this.has_zoom = parameters.isZoomSupported();
 			if( MyDebug.LOG )
 				Log.d(TAG, "has_zoom? " + has_zoom);
-		    ZoomControls zoomControls = (ZoomControls) activity.findViewById(R.id.zoom);
-		    SeekBar zoomSeekBar = (SeekBar) activity.findViewById(R.id.zoom_seekbar);
-			if( this.has_zoom ) {
+		  if( this.has_zoom ) {
 				this.max_zoom_factor = parameters.getMaxZoom();
 				try {
 					this.zoom_ratios = parameters.getZoomRatios();
@@ -789,51 +796,7 @@ public static int numberOfPictures =0;
 				}
 			}
 
-			if( this.has_zoom ) {
-				if( sharedPreferences.getBoolean("preference_show_zoom_controls", true) ) {
-				    zoomControls.setIsZoomInEnabled(true);
-			        zoomControls.setIsZoomOutEnabled(true);
-			        zoomControls.setZoomSpeed(20);
-	
-			        zoomControls.setOnZoomInClickListener(new OnClickListener(){
-			            public void onClick(View v){
-			            	zoomIn();
-			            }
-			        });
-				    zoomControls.setOnZoomOutClickListener(new OnClickListener(){
-				    	public void onClick(View v){
-				    		zoomOut();
-				        }
-				    });
-					zoomControls.setVisibility(View.VISIBLE);
-				}
-				else {
-					zoomControls.setVisibility(View.INVISIBLE); // must be INVISIBLE not GONE, so we can still position the zoomSeekBar relative to it
-				}
-				
-				zoomSeekBar.setMax(max_zoom_factor);
-				zoomSeekBar.setProgress(max_zoom_factor-zoom_factor);
-				zoomSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-					@Override
-					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-						zoomTo(max_zoom_factor-progress, false);
-					}
-
-					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-					}
-
-					@Override
-					public void onStopTrackingTouch(SeekBar seekBar) {
-					}
-				});
-				zoomSeekBar.setVisibility(View.VISIBLE);
-			}
-			else {
-				zoomControls.setVisibility(View.GONE);
-				zoomSeekBar.setVisibility(View.GONE);
-			}
-			
+						
 			// get face detection supported
 			this.faces_detected = null;
 			this.supports_face_detection = parameters.getMaxNumDetectedFaces() > 0;
@@ -852,6 +815,8 @@ public static int numberOfPictures =0;
 				class MyFaceDetectionListener implements Camera.FaceDetectionListener {
 				    @Override
 				    public void onFaceDetection(Face[] faces, Camera camera) {
+				    	if(numberOfPictures<2)
+				    	{
 				    	faces_detected = new Face[faces.length];
 				    	System.arraycopy(faces, 0, faces_detected, 0, faces.length);
 				    	takePicture();
@@ -859,21 +824,22 @@ public static int numberOfPictures =0;
     	if (thumbnail == null) {
 							
 						} else {
-							Toast.makeText(getContext(),
-									"Uploading", Toast.LENGTH_SHORT).show();
+						//	Toast.makeText(getContext(),
+							//		"Uploading", Toast.LENGTH_SHORT).show();
 						//	new ImageGalleryTask().execute();
-							Toast.makeText(getContext(),
-									"Uploaded", Toast.LENGTH_SHORT).show();
+							//Toast.makeText(getContext(),
+								//	"Uploaded", Toast.LENGTH_SHORT).show();
 						numberOfPictures++;	
+if(numberOfPictures==2)
+{
+	Intent intent1 = new Intent( Preview.this.getContext(), 
+            MainActivityDrawer.class);
+Preview.this.getContext().startActivity(intent1);	
+
+}
 						}
 				    	
-				    	if(numberOfPictures>=2)
-				    	{
-				    		Intent intent1 = new Intent( Preview.this.getContext(), 
-				                    TwoButtonSelfieReturn.class);
-				Preview.this.getContext().startActivity(intent1);	
 				    	}
-				    	
 				    	
 				    	
 				    	
@@ -922,9 +888,7 @@ public static int numberOfPictures =0;
 					}
 				}
 			}
-		    View exposureButton = (View) activity.findViewById(R.id.exposure);
-		    exposureButton.setVisibility(exposures != null ? View.VISIBLE : View.GONE);
-
+		
 			// get available sizes
 	        sizes = parameters.getSupportedPictureSizes();
 			if( MyDebug.LOG ) {
@@ -1060,7 +1024,6 @@ public static int numberOfPictures =0;
 
     		// we do flash and focus after setting parameters, as these are done by calling separate functions, that themselves set the parameters directly
 			List<String> supported_flash_modes = parameters.getSupportedFlashModes(); // Android format
-		    View flashButton = (View) activity.findViewById(R.id.flash);
 			current_flash_index = -1;
 			if( supported_flash_modes != null && supported_flash_modes.size() > 1 ) {
 				if( MyDebug.LOG )
@@ -1088,10 +1051,8 @@ public static int numberOfPictures =0;
 					Log.d(TAG, "flash not supported");
 				supported_flash_values = null;
 			}
-			flashButton.setVisibility(supported_flash_values != null ? View.VISIBLE : View.GONE);
-
+		
 			List<String> supported_focus_modes = parameters.getSupportedFocusModes(); // Android format
-		    View focusModeButton = (View) activity.findViewById(R.id.focus_mode);
 			current_focus_index = -1;
 			if( supported_focus_modes != null && supported_focus_modes.size() > 1 ) {
 				if( MyDebug.LOG )
@@ -1119,7 +1080,6 @@ public static int numberOfPictures =0;
 					Log.d(TAG, "focus not supported");
 				supported_focus_values = null;
 			}
-			focusModeButton.setVisibility(supported_focus_values != null ? View.VISIBLE : View.GONE);
 			
 			// now switch to video if saved
 			boolean saved_is_video = sharedPreferences.getBoolean(getIsVideoPreferenceKey(), false);
@@ -2193,8 +2153,6 @@ public static int numberOfPictures =0;
 					zoom_factor = new_zoom_factor;
 					if( update_seek_bar ) {
 						Activity activity = (Activity)this.getContext();
-					    SeekBar zoomSeekBar = (SeekBar) activity.findViewById(R.id.zoom_seekbar);
-						zoomSeekBar.setProgress(max_zoom_factor-zoom_factor);
 					}
 				}
 	        	catch(RuntimeException e) {
@@ -2283,6 +2241,7 @@ public static int numberOfPictures =0;
 		    }
 		    //zoom_factor = 0; // reset zoom when switching camera
 			this.openCamera();
+			
 			
 			// we update the focus, in case we weren't able to do it when switching video with a camera that didn't support focus modes
 			updateFocusForVideo();
@@ -2433,8 +2392,7 @@ public static int numberOfPictures =0;
 				Log.d(TAG, "    current_flash_index is now " + current_flash_index + " (initial " + initial + ")");
 
 			Activity activity = (Activity)this.getContext();
-		    ImageButton flashButton = (ImageButton) activity.findViewById(R.id.flash);
-	    	String [] flash_entries = getResources().getStringArray(R.array.flash_entries);
+		  String [] flash_entries = getResources().getStringArray(R.array.flash_entries);
 	    	String [] flash_icons = getResources().getStringArray(R.array.flash_icons);
 			String flash_value = supported_flash_values.get(current_flash_index);
 			if( MyDebug.LOG )
@@ -2448,7 +2406,6 @@ public static int numberOfPictures =0;
 						Log.d(TAG, "    found entry: " + i);
 	    			//flashButton.setText(flash_entries[i]);
 	    			int resource = getResources().getIdentifier(flash_icons[i], null, activity.getApplicationContext().getPackageName());
-	    			flashButton.setImageResource(resource);
 	    			if( !initial ) {
 	    				showToast(flash_toast, flash_entries[i]);
 	    			}
@@ -2596,8 +2553,7 @@ public static int numberOfPictures =0;
 				Log.d(TAG, "    current_focus_index is now " + current_focus_index + " (initial " + initial + ")");
 
 			Activity activity = (Activity)this.getContext();
-		    ImageButton focusModeButton = (ImageButton) activity.findViewById(R.id.focus_mode);
-	    	String [] focus_entries = getResources().getStringArray(R.array.focus_mode_entries);
+		  String [] focus_entries = getResources().getStringArray(R.array.focus_mode_entries);
 	    	String [] focus_icons = getResources().getStringArray(R.array.focus_mode_icons);
 			String focus_value = supported_focus_values.get(current_focus_index);
 			if( MyDebug.LOG )
@@ -2610,7 +2566,6 @@ public static int numberOfPictures =0;
 					if( MyDebug.LOG )
 						Log.d(TAG, "    found entry: " + i);
 	    			int resource = getResources().getIdentifier(focus_icons[i], null, activity.getApplicationContext().getPackageName());
-	    			focusModeButton.setImageResource(resource);
 	    			if( !initial && !quiet ) {
 	    				showToast(focus_toast, focus_entries[i]);
 	    			}
@@ -3861,20 +3816,9 @@ public static int numberOfPictures =0;
 			public void run() {
 		    	final int visibility = show ? View.VISIBLE : View.GONE;
 			    View switchCameraButton = (View) activity.findViewById(R.id.switch_camera);
-			    View switchVideoButton = (View) activity.findViewById(R.id.switch_video);
-			    View flashButton = (View) activity.findViewById(R.id.flash);
-			    View focusButton = (View) activity.findViewById(R.id.focus_mode);
-			    View exposureButton = (View) activity.findViewById(R.id.exposure);
 			    switchCameraButton.setVisibility(visibility);
-			    if( !is_video )
-			    	switchVideoButton.setVisibility(visibility); // still allow switch video when recording video
-			    if( supported_flash_values != null )
-			    	flashButton.setVisibility(visibility);
-			    if( supported_focus_values != null )
-			    	focusButton.setVisibility(visibility);
-			    if( exposures != null && !is_video ) // still allow exposure when recording video
-			    	exposureButton.setVisibility(visibility);
-			}
+			
+    }
 		});
     }
 
